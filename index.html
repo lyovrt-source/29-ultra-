@@ -32,7 +32,6 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
   display: flex; gap: 8px; align-items: center; justify-content: center; z-index: 100;
 }
 
-/* Սեղանի թվերը մեծացված են 15%-ով և ավելացված է անիմացիա */
 .center-card {
     width: 40.5px; height: 58.2px; background: var(--card-bg); 
     border: 1.5px solid var(--gray); border-radius: 50%;
@@ -46,46 +45,38 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
     100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
+@keyframes win-glow { 0% { box-shadow: 0 0 5px var(--blue); border-color: var(--blue); } 50% { box-shadow: 0 0 20px var(--blue); border-color: #fff; } 100% { box-shadow: 0 0 5px var(--blue); border-color: var(--blue); } }
+@keyframes lose-glow { 0% { box-shadow: 0 0 5px var(--red); border-color: var(--red); } 50% { box-shadow: 0 0 20px var(--red); border-color: #fff; } 100% { box-shadow: 0 0 5px var(--red); border-color: var(--red); } }
+@keyframes draw-glow { 0% { box-shadow: 0 0 5px #fff; border-color: #fff; } 50% { box-shadow: 0 0 20px #fff; border-color: var(--gray); } 100% { box-shadow: 0 0 5px #fff; border-color: #fff; } }
+
+.winner { animation: win-glow 1.5s infinite !important; border: 2px solid var(--blue) !important; }
+.loser { animation: lose-glow 1.5s infinite !important; border: 2px solid var(--red) !important; }
+.draw { animation: draw-glow 1.5s infinite !important; border: 2px solid #fff !important; }
+
 .seat-slot { position: absolute; transform: translate(-50%, -50%); width: 80px; height: 115px; display: flex; flex-direction: column; align-items: center; z-index: 5; transition: all 0.3s; box-sizing: border-box;}
 .has-player { border: 1.2px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.3); }
 .seat-slot.selected.has-player { border: 2px solid var(--neon-green) !important; box-shadow: 0 0 12px var(--neon-green) !important; background: rgba(57, 255, 20, 0.08) !important; }
 
-#dealerSlot { 
-  width: 96px; height: 138px;
-  border: 2px solid rgba(255, 255, 255, 0.8) !important;
-}
-
-#dealerSlot .name-tag { color: #fff; font-size: 13px; }
+#dealerSlot { width: 96px; height: 138px; border: 2px solid rgba(255, 255, 255, 0.8) !important; }
+#dealerSlot .name-tag { color: #fff; font-size: 13px; text-transform: uppercase; }
 #dealerSlot .score-tag { color: #fff; font-size: 18px; }
+
 .name-box { width: 100%; padding: 4px 0; border-radius: 10px 10px 0 0; background: rgba(0,0,0,0.6); }
 .name-tag { color: var(--gold); font-size: 11px; font-weight: bold; }
 
 .cards-container { position: relative; width: 70px; height: 50px; margin-top: 8px; display: flex; justify-content: center; }
-#dealerSlot .cards-container {
-  width: 80px; height: 60px; margin: 10px auto 0 auto; 
-}
-
+#dealerSlot .cards-container { width: 80px; height: 60px; margin: 10px auto 0 auto; }
 .card-circle { width: 32px; height: 46px; background: var(--card-bg); border: 1.5px solid var(--gray); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; position: absolute; }
 #dealerSlot .card-circle { width: 38px; height: 54px; font-size: 32px; }
 
-.status-area { 
-  position: absolute; bottom: -12px;
-  height: 24px; display: flex; align-items: center; justify-content: center; 
-  width: 100%; 
-}
+.status-area { position: absolute; bottom: -12px; height: 24px; display: flex; align-items: center; justify-content: center; width: 100%; }
 .score-tag { color: #fff; font-size: 15px; font-weight: 900; background: var(--bg); padding: 0 4px; }
 .bust-label { color: var(--red); font-size: 10px; font-weight: bold; background: #000; padding: 0 4px; }
 
 .controls { position: fixed; bottom: 10px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0 10px; box-sizing: border-box; }
 .btn-group { display: flex; gap: 7px; width: 100%; justify-content: center; }
 .main-btn { flex: 1; padding: 10.5px; border: none; border-radius: 7px; font-weight: bold; cursor: pointer; color: white; background: var(--green); font-size: 10px; max-width: 80px; transition: 0.2s; }
-
-#historyBtn {
-  background: linear-gradient(135deg, #2196F3, #1565C0);
-  box-shadow: 0 0 10px rgba(33, 150, 243, 0.4);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
+#historyBtn { background: linear-gradient(135deg, #2196F3, #1565C0); box-shadow: 0 0 10px rgba(33, 150, 243, 0.4); border: 1px solid rgba(255,255,255,0.2); }
 .flying-card { position: fixed; z-index: 9999; pointer-events: none; width: 35.2px; height: 50.6px; background: var(--card-bg); border: 1.5px solid var(--gray); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 26px; transition: all 0.5s ease-in; }
 
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; }
@@ -98,7 +89,7 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
 
 <div id="addModal" class="modal-overlay">
   <div class="modal-content">
-    <h3 id="modalTitle" style="color:var(--gold); margin:0; font-size: 16px;">ՆՈՐ ԽԱՂԱՑՈՂ</h3>
+    <h3 style="color:var(--gold); margin:0; font-size: 16px;">ՆՈՐ ԽԱՂԱՑՈՂ</h3>
     <input type="text" id="playerNameInput" class="modal-input" placeholder="Անուն">
     <button class="main-btn" style="max-width: none; width: 100%;" onclick="confirmAddPlayer()">ՀԱՍՏԱՏԵԼ</button>
   </div>
@@ -147,7 +138,7 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
 
 <script>
 let seats = [];
-let dealer = { name: "ԴԻԼԵՐ", cards: [], initial: [], tableCards: [], score: 0, stopped: false };
+let dealer = { name: "ՎԱՐՈՂ", cards: [], initial: [], tableCards: [], score: 0, stopped: false };
 let selectedSeatIndex = -1;
 let currentAddingIndex = null;
 let currentPokerCards = [];
@@ -218,7 +209,7 @@ function confirmAddPlayer() {
 function deletePlayer(i) {
     seats[i] = { name: null, cards: [], initial: [], tableCards: [], score: 0, stopped: false };
     let slot = document.getElementById("slot" + i);
-    slot.classList.remove('has-player', 'selected');
+    slot.classList.remove('has-player', 'selected', 'winner', 'loser', 'draw');
     slot.innerHTML = `<span style="margin-top:40px; color:rgba(255,255,255,0.15); font-size:35px;">+</span>`;
 }
 
@@ -251,39 +242,6 @@ function addPokerCard() {
     card.id = 'p-card-' + (currentPokerCards.length - 1);
     card.innerText = val;
     document.getElementById('centralArea').appendChild(card);
-}
-
-function undoLastCard() {
-    if (selectedSeatIndex === -1) return;
-    const s = (selectedSeatIndex === 100) ? dealer : seats[selectedSeatIndex];
-    if (currentPokerCards.length > 0) {
-        const lastVal = currentPokerCards.pop();
-        s.score -= lastVal;
-        const lastCardEl = document.getElementById('p-card-' + currentPokerCards.length);
-        if (lastCardEl) lastCardEl.remove();
-    } 
-    else if (s.tableCards.length > 0) {
-        s.stopped = false;
-        const lastVal = s.tableCards.pop();
-        s.cards.pop();
-        s.score -= lastVal;
-        currentPokerCards = [...s.tableCards, lastVal];
-        s.tableCards = [];
-        document.getElementById('centralArea').innerHTML = currentPokerCards.map((n, idx) => 
-            `<div class="center-card" id="p-card-${idx}">${n}</div>`).join('');
-    }
-    if(selectedSeatIndex === 100) renderDealer(); else renderSeat(selectedSeatIndex);
-    selectSeat(selectedSeatIndex);
-}
-
-function renderSeatScore(i) {
-    let s = seats[i];
-    const status = document.querySelector(`#slot${i} .status-area`);
-    if(status) status.innerHTML = s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`;
-}
-
-function renderDealerScore() {
-    document.getElementById('dealerStatus').innerHTML = dealer.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${dealer.score}</span>`;
 }
 
 function finishTurn() {
@@ -322,8 +280,84 @@ function finishTurn() {
     setTimeout(() => {
         currentPokerCards = [];
         document.getElementById('centralArea').innerHTML = '';
-        selectSeat(selectedSeatIndex);
+        if(isDealer) {
+            checkWinners();
+            selectSeat(100);
+        } else {
+            selectNextPlayer(selectedSeatIndex);
+        }
     }, 600 + (currentPokerCards.length * 100));
+}
+
+function selectNextPlayer(currentIndex) {
+    let found = false;
+    // Փնտրում ենք հաջորդ ակտիվ խաղացողին ժամացույցի սլաքով
+    for (let i = 1; i <= 9; i++) {
+        let idx = (currentIndex + i) % 9;
+        if (seats[idx] && seats[idx].name && !seats[idx].stopped) {
+            selectSeat(idx);
+            found = true;
+            break;
+        }
+    }
+    if (!found) selectSeat(100);
+}
+
+function undoLastCard() {
+    if (selectedSeatIndex === -1) return;
+    const s = (selectedSeatIndex === 100) ? dealer : seats[selectedSeatIndex];
+    
+    // Եթե STOP-ը սեղմված է, առաջին սեղմումով միայն STOP-ը հանիր
+    if (s.stopped) {
+        s.stopped = false;
+        // Հետ բերել քարերը կենտրոն, բայց չջնջել
+        currentPokerCards = [...s.tableCards];
+        s.tableCards = [];
+        // Հեռացնել վերջին քարերը ձեռքից
+        s.cards = s.cards.slice(0, s.initial.length);
+        s.score = s.initial.reduce((a,b) => a+b, 0) + currentPokerCards.reduce((a,b) => a+b, 0);
+        
+        document.getElementById('centralArea').innerHTML = currentPokerCards.map((n, idx) => 
+            `<div class="center-card" id="p-card-${idx}">${n}</div>`).join('');
+            
+        if(selectedSeatIndex === 100) renderDealer(); else renderSeat(selectedSeatIndex);
+        selectSeat(selectedSeatIndex);
+        return;
+    }
+
+    if (currentPokerCards.length > 0) {
+        const lastVal = currentPokerCards.pop();
+        s.score -= lastVal;
+        const lastCardEl = document.getElementById('p-card-' + currentPokerCards.length);
+        if (lastCardEl) lastCardEl.remove();
+    }
+    
+    if(selectedSeatIndex === 100) renderDealer(); else renderSeat(selectedSeatIndex);
+    selectSeat(selectedSeatIndex);
+}
+
+function checkWinners() {
+    const dScore = dealer.score;
+    seats.forEach((s, i) => {
+        if (!s.name) return;
+        const slot = document.getElementById('slot' + i);
+        slot.classList.remove('winner', 'loser', 'draw');
+        if (s.score > 29) slot.classList.add('loser');
+        else if (dScore > 29) slot.classList.add('winner');
+        else if (s.score > dScore) slot.classList.add('winner');
+        else if (s.score < dScore) slot.classList.add('loser');
+        else slot.classList.add('draw');
+    });
+}
+
+function renderSeatScore(i) {
+    let s = seats[i];
+    const status = document.querySelector(`#slot${i} .status-area`);
+    if(status) status.innerHTML = s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`;
+}
+
+function renderDealerScore() {
+    document.getElementById('dealerStatus').innerHTML = dealer.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${dealer.score}</span>`;
 }
 
 function showHistory() {
@@ -367,20 +401,24 @@ function dealInitial() {
         s.score = n1 + n2;
         s.stopped = false;
     });
-    seats.forEach((s, i) => { if(s.name) renderSeat(i); });
+    seats.forEach((s, i) => { if(s.name) { renderSeat(i); document.getElementById('slot'+i).classList.remove('winner', 'loser', 'draw'); } });
     renderDealer();
-    if(selectedSeatIndex !== -1) selectSeat(selectedSeatIndex);
+    
+    // Խաղը սկսում է ինդեքս 6-ից, եթե մարդ կա, եթե չէ՝ առաջին ակտիվից
+    if (seats[6].name) selectSeat(6);
+    else {
+        let firstActive = seats.findIndex(s => s.name);
+        selectSeat(firstActive !== -1 ? firstActive : 100);
+    }
 }
 
 function resetTable() {
-    [...seats.filter(x => x.name), dealer].forEach(s => { 
-        s.cards = []; s.initial = []; s.tableCards = []; s.score = 0; s.stopped = false; 
-    });
-    seats.forEach((s, i) => { if(s.name) renderSeat(i); });
+    [...seats.filter(x => x.name), dealer].forEach(s => { s.cards = []; s.initial = []; s.tableCards = []; s.score = 0; s.stopped = false; });
+    seats.forEach((s, i) => { if(s.name) { renderSeat(i); document.getElementById('slot'+i).classList.remove('winner', 'loser', 'draw'); } });
     renderDealer();
     currentPokerCards = [];
     document.getElementById('centralArea').innerHTML = '';
-    selectSeat(selectedSeatIndex);
+    selectSeat(-1);
 }
 
 setupSlots();
