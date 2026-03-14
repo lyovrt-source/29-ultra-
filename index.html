@@ -21,10 +21,32 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
   opacity: 0.15; pointer-events: none; border-radius: 150px; z-index: 0;
 }
 
+/* Challenge բառի ոճը - Անփոփոխ */
 .table-label {
   position: absolute; top: 56%; left: 50%; transform: translate(-50%, -50%);
   color: rgba(255, 215, 0, 0.4); font-size: 19px; font-weight: bold; letter-spacing: 1px;
   text-transform: uppercase; pointer-events: none; font-style: italic; z-index: 1;
+}
+
+/* 29 ԹՎԻ ԱՌԱՆՁԻՆ ԲԼՈԿԸ - ՃԻՇՏ ՆՈՒՅՆ ՈՃՈՎ */
+.big-number-display {
+  position: absolute; 
+  top: 71%; /* Իջեցված է challenge-ից ցած */
+  left: 50%; 
+  transform: translate(-50%, -50%);
+  
+  /* Ճշգրիտ նույն ոճային հատկանիշները */
+  color: rgba(55, 55, 255, 0.1); 
+  font-size: 80px; /* Չափը կարող ես փոխել այստեղից */
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-style: italic;
+  
+  pointer-events: none;
+  z-index: 1;
+  /* Մի փոքր ավելի ընդգծված 3D էֆեկտ */
+  text-shadow: 0px 0px 0px rgba(0,0,0,0.5);
 }
 
 #centralArea {
@@ -114,6 +136,9 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
   <div class="table" id="mainTable">
     <div class="table-texture-overlay"></div>
     <div class="table-label">Logic & math challenge</div>
+    
+    <div class="big-number-display">29</div>
+
     <div id="dealerSlot" class="seat-slot has-player" style="left: 50%; top: 12%;" onclick="handleDealerClick()">
         <div class="name-box"><span id="dealerName" class="name-tag">ՎԱՐՈՂ</span></div>
         <div id="dealerCards" class="cards-container"></div>
@@ -291,7 +316,6 @@ function finishTurn() {
 
 function selectNextPlayer(currentIndex) {
     let found = false;
-    // Փնտրում ենք հաջորդ ակտիվ խաղացողին ժամացույցի սլաքով
     for (let i = 1; i <= 9; i++) {
         let idx = (currentIndex + i) % 9;
         if (seats[idx] && seats[idx].name && !seats[idx].stopped) {
@@ -307,13 +331,10 @@ function undoLastCard() {
     if (selectedSeatIndex === -1) return;
     const s = (selectedSeatIndex === 100) ? dealer : seats[selectedSeatIndex];
     
-    // Եթե STOP-ը սեղմված է, առաջին սեղմումով միայն STOP-ը հանիր
     if (s.stopped) {
         s.stopped = false;
-        // Հետ բերել քարերը կենտրոն, բայց չջնջել
         currentPokerCards = [...s.tableCards];
         s.tableCards = [];
-        // Հեռացնել վերջին քարերը ձեռքից
         s.cards = s.cards.slice(0, s.initial.length);
         s.score = s.initial.reduce((a,b) => a+b, 0) + currentPokerCards.reduce((a,b) => a+b, 0);
         
@@ -404,7 +425,6 @@ function dealInitial() {
     seats.forEach((s, i) => { if(s.name) { renderSeat(i); document.getElementById('slot'+i).classList.remove('winner', 'loser', 'draw'); } });
     renderDealer();
     
-    // Խաղը սկսում է ինդեքս 6-ից, եթե մարդ կա, եթե չէ՝ առաջին ակտիվից
     if (seats[6].name) selectSeat(6);
     else {
         let firstActive = seats.findIndex(s => s.name);
