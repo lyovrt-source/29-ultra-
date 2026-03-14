@@ -3,86 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Blackjack 29 - Pro Deck</title>
+<title>Blackjack 29 - Pro Design</title>
 <style>
 :root { --gold: #ffd700; --bg: #0a192f; --red: #ff4444; --green: #1a7a4a; --neon-green: #39ff14; --gray: #444; --card-bg: #000; --blue: #2196F3; }
 body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: center; margin: 0; overflow: hidden; }
 
 .table-container { display: flex; justify-content: center; align-items: center; height: 80vh; }
 .table {
-  position: relative; width: 92vw; max-width: 360px; height: 70vh;     
+  position: relative; width: 92vw; max-width: 380px; height: 75vh;     
   background: radial-gradient(circle at center, #1e3c72 0%, #0a192f 100%);
-  border-radius: 150px; border: 8px solid #050a14; box-shadow: inset 0 0 40px #000;
+  border-radius: 160px; border: 10px solid #050a14; box-shadow: inset 0 0 45px #000;
+}
+
+.table-texture-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+  opacity: 0.15; pointer-events: none; border-radius: 150px; z-index: 0;
+}
+
+.table-label {
+  position: absolute; top: 56%; left: 50%; transform: translate(-50%, -50%);
+  color: rgba(255, 215, 0, 0.4); font-size: 19px; font-weight: bold; letter-spacing: 1px;
+  text-transform: uppercase; pointer-events: none; font-style: italic; z-index: 1;
 }
 
 #centralArea {
   position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
-  display: flex; flex-direction: column; gap: 8px; align-items: center; z-index: 100;
+  display: flex; gap: 8px; align-items: center; justify-content: center; z-index: 100;
 }
-.card-row { display: flex; gap: 4px; }
 
+/* Սեղանի թվերը մեծացված են 15%-ով և ավելացված է անիմացիա */
 .center-card {
-    width: 32px; height: 46px; background: #1a1a1a; 
-    border: 1.8px solid var(--blue); border-radius: 50%;
+    width: 40.5px; height: 58.2px; background: var(--card-bg); 
+    border: 1.5px solid var(--gray); border-radius: 50%;
     color: #fff; display: flex; align-items: center; justify-content: center; 
-    font-weight: 900; font-size: 22px; cursor: pointer; position: relative;
-    transition: all 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    font-weight: 900; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.center-card.hidden { background: #222; color: var(--gold); border-color: #444; font-size: 16px; }
-.center-card.revealed { background: var(--card-bg); border-color: var(--neon-green); box-shadow: 0 0 12px var(--neon-green); color: white; transform: rotateY(360deg); }
-.j-card { color: var(--red) !important; }
+@keyframes popIn {
+    0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
 
-.seat-slot { position: absolute; transform: translate(-50%, -50%); width: 80px; height: 115px; display: flex; flex-direction: column; align-items: center; z-index: 5; transition: all 0.3s; }
+.seat-slot { position: absolute; transform: translate(-50%, -50%); width: 80px; height: 115px; display: flex; flex-direction: column; align-items: center; z-index: 5; transition: all 0.3s; box-sizing: border-box;}
 .has-player { border: 1.2px solid rgba(255,255,255,0.1); border-radius: 12px; background: rgba(0,0,0,0.3); }
-.seat-slot.selected.has-player { border: 2px solid var(--neon-green); box-shadow: 0 0 12px var(--neon-green); background: rgba(57, 255, 20, 0.08); }
+.seat-slot.selected.has-player { border: 2px solid var(--neon-green) !important; box-shadow: 0 0 12px var(--neon-green) !important; background: rgba(57, 255, 20, 0.08) !important; }
 
+#dealerSlot { 
+  width: 96px; height: 138px;
+  border: 2px solid rgba(255, 255, 255, 0.8) !important;
+}
+
+#dealerSlot .name-tag { color: #fff; font-size: 13px; }
+#dealerSlot .score-tag { color: #fff; font-size: 18px; }
 .name-box { width: 100%; padding: 4px 0; border-radius: 10px 10px 0 0; background: rgba(0,0,0,0.6); }
 .name-tag { color: var(--gold); font-size: 11px; font-weight: bold; }
 
 .cards-container { position: relative; width: 70px; height: 50px; margin-top: 8px; display: flex; justify-content: center; }
+#dealerSlot .cards-container {
+  width: 80px; height: 60px; margin: 10px auto 0 auto; 
+}
+
 .card-circle { width: 32px; height: 46px; background: var(--card-bg); border: 1.5px solid var(--gray); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; position: absolute; }
-.card-0 { left: 2px; z-index: 1; } .card-1 { left: 36px; z-index: 2; }
-.card-extra { z-index: 10; border-color: var(--gold); }
+#dealerSlot .card-circle { width: 38px; height: 54px; font-size: 32px; }
 
-.status-area { height: 22px; display: flex; align-items: center; justify-content: center; width: 100%; margin-top: auto; padding-bottom: 4px; }
-.score-tag { color: #fff; font-size: 15px; font-weight: 900; }
-.bust-label { color: var(--red); font-size: 10px; font-weight: bold; }
+.status-area { 
+  position: absolute; bottom: -12px;
+  height: 24px; display: flex; align-items: center; justify-content: center; 
+  width: 100%; 
+}
+.score-tag { color: #fff; font-size: 15px; font-weight: 900; background: var(--bg); padding: 0 4px; }
+.bust-label { color: var(--red); font-size: 10px; font-weight: bold; background: #000; padding: 0 4px; }
 
-.controls { position: fixed; bottom: 10px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 0 10px; box-sizing: border-box; }
-.btn-group { display: flex; gap: 8px; width: 100%; justify-content: center; }
-.main-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; color: white; background: var(--green); font-size: 11px; max-width: 90px; }
+.controls { position: fixed; bottom: 10px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 0 10px; box-sizing: border-box; }
+.btn-group { display: flex; gap: 7px; width: 100%; justify-content: center; }
+.main-btn { flex: 1; padding: 10.5px; border: none; border-radius: 7px; font-weight: bold; cursor: pointer; color: white; background: var(--green); font-size: 10px; max-width: 80px; transition: 0.2s; }
 
-.flying-card { position: fixed; z-index: 9999; pointer-events: none; width: 32px; height: 46px; background: var(--card-bg); border: 2px solid var(--neon-green); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 24px; transition: all 0.6s ease-in; }
+#historyBtn {
+  background: linear-gradient(135deg, #2196F3, #1565C0);
+  box-shadow: 0 0 10px rgba(33, 150, 243, 0.4);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.flying-card { position: fixed; z-index: 9999; pointer-events: none; width: 35.2px; height: 50.6px; background: var(--card-bg); border: 1.5px solid var(--gray); border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 26px; transition: all 0.5s ease-in; }
 
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 2000; }
-.modal-content { background: #1a1a1a; padding: 20px; border-radius: 15px; border: 2px solid var(--gold); width: 260px; text-align: center; }
-.modal-input { width: 80%; padding: 10px; margin: 15px 0; border-radius: 8px; border: 1px solid var(--gray); background: #000; color: #fff; text-align: center; font-size: 18px; }
+.modal-content { background: #1a1a1a; padding: 15px; border-radius: 12px; border: 1.5px solid var(--gold); width: 250px; text-align: center; }
+.modal-input { width: 80%; padding: 8px; margin: 10px 0; border-radius: 6px; border: 1px solid var(--gray); background: #000; color: #fff; text-align: center; font-size: 16px; }
+.hist-slot { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin: 8px 0; }
 </style>
 </head>
 <body>
 
 <div id="addModal" class="modal-overlay">
   <div class="modal-content">
-    <h3 style="color:var(--gold); margin:0;">ՆՈՐ ԽԱՂԱՑՈՂ</h3>
+    <h3 id="modalTitle" style="color:var(--gold); margin:0; font-size: 16px;">ՆՈՐ ԽԱՂԱՑՈՂ</h3>
     <input type="text" id="playerNameInput" class="modal-input" placeholder="Անուն">
-    <button class="main-btn" onclick="confirmAddPlayer()">ԱՎԵԼԱՑՆԵԼ</button>
+    <button class="main-btn" style="max-width: none; width: 100%;" onclick="confirmAddPlayer()">ՀԱՍՏԱՏԵԼ</button>
+  </div>
+</div>
+
+<div id="historyModal" class="modal-overlay" onclick="this.style.display='none'">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h3 id="histTitle" style="color:var(--gold); margin-bottom:10px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 5px;"></h3>
+    <div class="hist-slot">
+        <div style="font-size:10px; color:#888; margin-bottom: 5px;">ՁԵՌՔԻ ԹՎԵՐ</div>
+        <div id="histInitial" style="display:flex; gap:4px; justify-content:center;"></div>
+    </div>
+    <div class="hist-slot">
+        <div style="font-size:10px; color:#888; margin-bottom: 5px;">ՍԵՂԱՆԻՑ ՎԵՐՑՐԱԾ</div>
+        <div id="histTable" style="display:flex; gap:4px; justify-content:center; flex-wrap:wrap;"></div>
+    </div>
+    <button class="main-btn" style="background:#444; margin-top:10px; max-width: none; width: 100%;" onclick="document.getElementById('historyModal').style.display='none'">ՓԱԿԵԼ</button>
   </div>
 </div>
 
 <div class="table-container">
   <div class="table" id="mainTable">
+    <div class="table-texture-overlay"></div>
+    <div class="table-label">Logic & math challenge</div>
+    <div id="dealerSlot" class="seat-slot has-player" style="left: 50%; top: 12%;" onclick="handleDealerClick()">
+        <div class="name-box"><span id="dealerName" class="name-tag">ՎԱՐՈՂ</span></div>
+        <div id="dealerCards" class="cards-container"></div>
+        <div id="dealerStatus" class="status-area"></div>
+    </div>
     <div id="centralArea"></div>
   </div>
 </div>
 
 <div class="controls">
     <div class="btn-group">
-        <button id="startBtn" class="main-btn" style="background: var(--gold); color: #000;" onclick="startRound()">ՍԿՍԵԼ</button>
-        <button id="historyBtn" class="main-btn" style="background: var(--blue); color: #fff; display: none;" onclick="showHistory()">ՊԱՏՄՈՒԹՅՈՒՆ</button>
         <button id="stopBtn" class="main-btn" style="background: var(--red); display: none;" onclick="finishTurn()">STOP</button>
+        <button id="historyBtn" class="main-btn" style="display: none;" onclick="showHistory()">ՆԱՅԵԼ</button>
+        <button id="addCardBtn" class="main-btn" style="background: var(--gold); color: #000; display:none;" onclick="addPokerCard()">+ ԹԻՎ</button>
     </div>
     <div class="btn-group">
+        <button id="undoBtn" class="main-btn" style="background: #555; font-size: 15px; display: none;" onclick="undoLastCard()">↩️</button>
         <button class="main-btn" style="background:#444;" onclick="resetTable()">ՄԱՔՐԵԼ</button>
         <button class="main-btn" onclick="dealInitial()">ԲԱԺԱՆԵԼ</button>
     </div>
@@ -90,275 +147,242 @@ body { background: var(--bg); color: #fff; font-family: sans-serif; text-align: 
 
 <script>
 let seats = [];
+let dealer = { name: "ԴԻԼԵՐ", cards: [], initial: [], tableCards: [], score: 0, stopped: false };
 let selectedSeatIndex = -1;
 let currentAddingIndex = null;
-let currentDeck = [];
-let lastActionCards = []; // Պատմության համար
-let clickCount = 0;
+let currentPokerCards = [];
 let lastClickTime = 0;
-
-const alphabet = "ABCDEFGHIJ";
+let clickCount = 0;
 
 function setupSlots() {
   const t = document.getElementById("mainTable");
   for(let i=0; i<9; i++){
+    if(i === 4 || i === 5) continue; 
     let angle = (2 * Math.PI / 9) * i + Math.PI/2;
-    let r = (i === 2 || i === 7 || i === 0) ? 42 : 46;
+    let r = (i === 2 || i === 7 || i === 0) ? 40 : 44;
     let x = 50 + r * Math.cos(angle); 
-    let y = 50 + ((i === 2 || i === 7) ? 64 : 48) * Math.sin(angle);
-    seats[i] = { name: null, cards: [], extraCards: [], score: 0, isDone: false };
+    let y = 50 + ((i === 2 || i === 7) ? 60 : 46) * Math.sin(angle);
+    seats[i] = { name: null, cards: [], initial: [], tableCards: [], score: 0, stopped: false };
     let slot = document.createElement("div");
     slot.className = "seat-slot";
     slot.id = "slot" + i;
     slot.style.left = x + "%"; slot.style.top = y + "%";
-    slot.onclick = (e) => handleSeatClick(i);
+    slot.onclick = () => handleSeatClick(i);
     slot.innerHTML = `<span style="margin-top:40px; color:rgba(255,255,255,0.15); font-size:35px;">+</span>`;
     t.appendChild(slot);
   }
 }
 
-function handleSeatClick(i) {
+function handleDealerClick() {
     const now = Date.now();
-    if (now - lastClickTime < 400) {
-        clickCount++;
-    } else {
-        clickCount = 1;
-    }
+    if (now - lastClickTime < 400) clickCount++; else clickCount = 1;
     lastClickTime = now;
-
-    if (clickCount >= 5 && seats[i].name) {
-        deletePlayer(i);
-        clickCount = 0;
+    if (clickCount >= 2) {
+        currentAddingIndex = 100;
+        document.getElementById('addModal').style.display = 'flex';
         return;
     }
-
-    if(!seats[i].name) { openAddModal(i); return; }
-    selectSeat(i);
+    selectSeat(100);
 }
 
-function deletePlayer(i) {
-    seats[i] = { name: null, cards: [], extraCards: [], score: 0, isDone: false };
-    let slot = document.getElementById("slot" + i);
-    slot.classList.remove('has-player', 'selected');
-    slot.innerHTML = `<span style="margin-top:40px; color:rgba(255,255,255,0.15); font-size:35px;">+</span>`;
-    if (selectedSeatIndex === i) {
-        selectedSeatIndex = -1;
-        document.getElementById('centralArea').innerHTML = '';
-        currentDeck = [];
-        updateButtons();
-    }
+function handleSeatClick(i) {
+    const now = Date.now();
+    if (now - lastClickTime < 400) clickCount++; else clickCount = 1;
+    lastClickTime = now;
+    if (clickCount >= 5 && seats[i].name) { deletePlayer(i); return; }
+    if(!seats[i].name) { openAddModal(i); return; }
+    selectSeat(i);
 }
 
 function openAddModal(i) {
   currentAddingIndex = i;
   document.getElementById('addModal').style.display = 'flex';
-  document.getElementById('playerNameInput').focus();
 }
 
 function confirmAddPlayer() {
   let name = document.getElementById('playerNameInput').value.trim();
-  if(!name) {
-    document.getElementById('addModal').style.display = 'none';
-    return;
-  }
-  if(currentAddingIndex !== null) {
+  if(!name) { document.getElementById('addModal').style.display = 'none'; return; }
+  if(currentAddingIndex === 100) {
+    dealer.name = name;
+    document.getElementById('dealerName').innerText = name;
+  } else {
     seats[currentAddingIndex].name = name;
     document.getElementById("slot" + currentAddingIndex).classList.add('has-player');
     renderSeat(currentAddingIndex);
-    document.getElementById('addModal').style.display = 'none';
-    document.getElementById('playerNameInput').value = '';
     selectSeat(currentAddingIndex);
   }
+  document.getElementById('addModal').style.display = 'none';
+  document.getElementById('playerNameInput').value = '';
+}
+
+function deletePlayer(i) {
+    seats[i] = { name: null, cards: [], initial: [], tableCards: [], score: 0, stopped: false };
+    let slot = document.getElementById("slot" + i);
+    slot.classList.remove('has-player', 'selected');
+    slot.innerHTML = `<span style="margin-top:40px; color:rgba(255,255,255,0.15); font-size:35px;">+</span>`;
 }
 
 function selectSeat(i) {
     selectedSeatIndex = i;
-    document.querySelectorAll('.seat-slot').forEach((s, idx) => {
-        s.classList.toggle('selected', idx === i);
-    });
-    updateButtons();
+    const s = (i === 100) ? dealer : seats[i];
+    document.querySelectorAll('.seat-slot').forEach(el => el.classList.remove('selected'));
+    const slotEl = (i === 100) ? document.getElementById('dealerSlot') : document.getElementById('slot' + i);
+    if(slotEl) slotEl.classList.add('selected');
+
+    document.getElementById('addCardBtn').style.display = (s.stopped || (!s.name && i!==100)) ? 'none' : 'block';
+    document.getElementById('stopBtn').style.display = (s.stopped || (!s.name && i!==100)) ? 'none' : 'block';
+    document.getElementById('historyBtn').style.display = (s.stopped) ? 'block' : 'none';
+    document.getElementById('undoBtn').style.display = (s.name || i===100) ? 'block' : 'none';
 }
 
-function updateButtons() {
-    if (selectedSeatIndex === -1) {
-        document.getElementById('startBtn').style.display = 'none';
-        document.getElementById('stopBtn').style.display = 'none';
-        document.getElementById('historyBtn').style.display = 'none';
-        return;
-    }
-    const s = seats[selectedSeatIndex];
-    const isRoundActive = currentDeck.length > 0;
-
-    document.getElementById('startBtn').style.display = (!isRoundActive && s.cards.length > 0 && !s.isDone) ? 'block' : 'none';
-    document.getElementById('stopBtn').style.display = isRoundActive ? 'block' : 'none';
-    document.getElementById('historyBtn').style.display = (s.isDone && !isRoundActive) ? 'block' : 'none';
-}
-
-function startRound() {
+function addPokerCard() {
     if (selectedSeatIndex === -1) return;
-    let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 8]; 
-    numbers.sort(() => Math.random() - 0.5);
-    currentDeck = numbers.map((n, i) => ({
-        val: n,
-        letter: alphabet[i],
-        isRevealed: false
-    }));
-    lastActionCards = []; // Մաքրում ենք այս հերթի պատմությունը
-    renderCentralDeck();
-    updateButtons();
-}
+    const s = (selectedSeatIndex === 100) ? dealer : seats[selectedSeatIndex];
+    if (s.score >= 29 || s.stopped) return;
 
-function renderCentralDeck() {
-    const area = document.getElementById('centralArea');
-    area.innerHTML = '';
-    let row1 = document.createElement('div'); row1.className = 'card-row';
-    let row2 = document.createElement('div'); row2.className = 'card-row';
-    currentDeck.forEach((card, i) => {
-        let el = document.createElement('div');
-        el.className = 'center-card hidden';
-        if (card.letter === 'J') el.classList.add('j-card');
-        el.id = 'deck-card-' + i;
-        el.innerText = card.letter;
-        el.onclick = () => revealCard(i);
-        if (i < 5) row1.appendChild(el);
-        else row2.appendChild(el);
-    });
-    area.appendChild(row1); area.appendChild(row2);
-}
-
-function revealCard(i) {
-    if (currentDeck[i].isRevealed || selectedSeatIndex === -1) return;
-    const s = seats[selectedSeatIndex];
-    if (s.score >= 29) return;
-
-    currentDeck[i].isRevealed = true;
-    lastActionCards.push(currentDeck[i].val); // Ավելացնում ենք պատմության մեջ
+    let val = Math.floor(Math.random() * 9) + 1;
+    currentPokerCards.push(val);
+    s.score += val;
     
-    let el = document.getElementById('deck-card-' + i);
-    el.classList.remove('hidden');
-    el.classList.add('revealed');
-    el.innerText = currentDeck[i].val;
+    if(selectedSeatIndex === 100) renderDealerScore(); else renderSeatScore(selectedSeatIndex);
 
-    s.score += currentDeck[i].val;
-    if (s.score > 29) s.isDone = true;
-    renderSeat(selectedSeatIndex);
+    const card = document.createElement('div');
+    card.className = 'center-card';
+    card.id = 'p-card-' + (currentPokerCards.length - 1);
+    card.innerText = val;
+    document.getElementById('centralArea').appendChild(card);
+}
+
+function undoLastCard() {
+    if (selectedSeatIndex === -1) return;
+    const s = (selectedSeatIndex === 100) ? dealer : seats[selectedSeatIndex];
+    if (currentPokerCards.length > 0) {
+        const lastVal = currentPokerCards.pop();
+        s.score -= lastVal;
+        const lastCardEl = document.getElementById('p-card-' + currentPokerCards.length);
+        if (lastCardEl) lastCardEl.remove();
+    } 
+    else if (s.tableCards.length > 0) {
+        s.stopped = false;
+        const lastVal = s.tableCards.pop();
+        s.cards.pop();
+        s.score -= lastVal;
+        currentPokerCards = [...s.tableCards, lastVal];
+        s.tableCards = [];
+        document.getElementById('centralArea').innerHTML = currentPokerCards.map((n, idx) => 
+            `<div class="center-card" id="p-card-${idx}">${n}</div>`).join('');
+    }
+    if(selectedSeatIndex === 100) renderDealer(); else renderSeat(selectedSeatIndex);
+    selectSeat(selectedSeatIndex);
+}
+
+function renderSeatScore(i) {
+    let s = seats[i];
+    const status = document.querySelector(`#slot${i} .status-area`);
+    if(status) status.innerHTML = s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`;
+}
+
+function renderDealerScore() {
+    document.getElementById('dealerStatus').innerHTML = dealer.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${dealer.score}</span>`;
 }
 
 function finishTurn() {
-    if (selectedSeatIndex === -1) return;
-    const s = seats[selectedSeatIndex];
-    const targetSlot = document.getElementById("slot" + selectedSeatIndex);
-    const targetRect = targetSlot.getBoundingClientRect();
-    
-    let revealed = currentDeck.filter(c => c.isRevealed);
-    s.extraCards.push(...revealed.map(c => c.val)); // Պահում ենք խաղացողի պատմության մեջ
+    if (selectedSeatIndex === -1 || currentPokerCards.length === 0) return;
+    const isDealer = (selectedSeatIndex === 100);
+    const s = isDealer ? dealer : seats[selectedSeatIndex];
+    s.stopped = true;
+    s.tableCards = [...currentPokerCards];
+    const targetId = isDealer ? "dealerSlot" : "slot" + selectedSeatIndex;
+    const targetRect = document.getElementById(targetId).getBoundingClientRect();
 
-    revealed.forEach((card, idx) => {
-        let cardIdx = currentDeck.findIndex(c => c === card);
-        let el = document.getElementById('deck-card-' + cardIdx);
-        let rect = el.getBoundingClientRect();
-
+    currentPokerCards.forEach((val, idx) => {
+        const el = document.getElementById('p-card-' + idx);
+        const rect = el.getBoundingClientRect();
         const clone = document.createElement('div');
         clone.className = 'flying-card';
-        clone.innerText = card.val;
+        clone.innerText = val;
         clone.style.left = rect.left + 'px';
         clone.style.top = rect.top + 'px';
         document.body.appendChild(clone);
         el.style.visibility = 'hidden';
 
         setTimeout(() => {
-            clone.style.left = (targetRect.left + 20) + 'px';
-            clone.style.top = (targetRect.top + 40) + 'px';
+            clone.style.left = (targetRect.left + (isDealer ? 30 : 25)) + 'px';
+            clone.style.top = (targetRect.top + (isDealer ? 50 : 40)) + 'px';
             clone.style.opacity = '0';
         }, idx * 100);
 
         setTimeout(() => {
             clone.remove();
-            s.cards.push(card.val);
-            renderSeat(selectedSeatIndex);
-        }, 600);
+            s.cards.push(val);
+            if(isDealer) renderDealer(); else renderSeat(selectedSeatIndex);
+        }, 500 + (idx * 100));
     });
 
     setTimeout(() => {
+        currentPokerCards = [];
         document.getElementById('centralArea').innerHTML = '';
-        currentDeck = [];
-        s.isDone = true;
-        updateButtons();
-    }, 700);
+        selectSeat(selectedSeatIndex);
+    }, 600 + (currentPokerCards.length * 100));
 }
 
 function showHistory() {
-    if (selectedSeatIndex === -1) return;
-    const s = seats[selectedSeatIndex];
-    const area = document.getElementById('centralArea');
-    area.innerHTML = '<p style="font-size:10px; color:var(--gold); margin:0;">ԲԱՑՎԱԾ ԹՎԵՐԸ</p>';
-    
-    let historyRow = document.createElement('div');
-    historyRow.className = 'card-row';
-    historyRow.style.flexWrap = 'wrap';
-    historyRow.style.justifyContent = 'center';
-
-    s.extraCards.forEach(val => {
-        let el = document.createElement('div');
-        el.className = 'center-card revealed';
-        el.innerText = val;
-        historyRow.appendChild(el);
-    });
-    area.appendChild(historyRow);
+    const s = (selectedSeatIndex === 100) ? dealer : seats[selectedSeatIndex];
+    document.getElementById('histTitle').innerText = s.name + " - ՊԱՏՄՈՒԹՅՈՒՆ";
+    document.getElementById('histInitial').innerHTML = s.initial.map(n => `<div class="card-circle" style="position:static; width:30px; height:42px; font-size:20px; margin:0 2px;">${n}</div>`).join('');
+    document.getElementById('histTable').innerHTML = s.tableCards.map(n => `<div class="card-circle" style="position:static; width:30px; height:42px; font-size:20px; margin:0 2px;">${n}</div>`).join('');
+    document.getElementById('historyModal').style.display = 'flex';
 }
 
 function renderSeat(i) {
   let s = seats[i];
   let slot = document.getElementById("slot" + i);
-  if(!s.name) return;
-  let cardsHtml = s.cards.map((c, idx) => {
-      let className = "card-circle";
-      let style = "";
-      if (idx === 0) className += " card-0";
-      else if (idx === 1) className += " card-1";
-      else {
-          className += " card-extra";
-          let targetX = (idx % 2 === 0) ? 2 : 36;
-          let targetY = (Math.floor(idx / 2) * 6);
-          style = `style="left: ${targetX}px; top: ${targetY}px; z-index: ${10 + idx};"`;
-      }
-      return `<div class="${className}" ${style}>${c}</div>`;
-  }).join('');
-
   slot.innerHTML = `
     <div class="name-box"><span class="name-tag">${s.name}</span></div>
-    <div class="cards-container">${cardsHtml}</div>
-    <div class="status-area">
-        ${s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`}
-    </div>
+    <div class="cards-container">${renderCards(s.cards, false)}</div>
+    <div class="status-area">${s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`}</div>
   `;
 }
 
+function renderDealer() {
+    document.getElementById('dealerCards').innerHTML = renderCards(dealer.cards, true);
+    renderDealerScore();
+}
+
+function renderCards(cards, isDealer) {
+    return cards.map((c, idx) => {
+        let sp = isDealer ? 42 : 36;
+        let style = (idx === 0) ? 'left:2px;' : (idx === 1) ? `left:${sp}px;` : `left:${(idx%2===0)?2:sp}px; top:${Math.floor(idx/2)*6}px; z-index:${10+idx}; border-color:var(--gold);`;
+        return `<div class="card-circle" style="${style}">${c}</div>`;
+    }).join('');
+}
+
 function dealInitial() {
-    seats.forEach((s, i) => {
-        if(s.name) {
-            let n1 = Math.floor(Math.random() * 9) + 1;
-            let n2 = Math.floor(Math.random() * 9) + 1;
-            s.cards = [n1, n2];
-            s.extraCards = [];
-            s.score = n1 + n2;
-            s.isDone = false;
-            renderSeat(i);
-        }
+    [...seats.filter(x => x.name), dealer].forEach(s => {
+        let n1 = Math.floor(Math.random() * 9) + 1;
+        let n2 = Math.floor(Math.random() * 9) + 1;
+        s.cards = [n1, n2];
+        s.initial = [n1, n2];
+        s.tableCards = [];
+        s.score = n1 + n2;
+        s.stopped = false;
     });
-    document.getElementById('centralArea').innerHTML = '';
-    currentDeck = [];
-    updateButtons();
+    seats.forEach((s, i) => { if(s.name) renderSeat(i); });
+    renderDealer();
+    if(selectedSeatIndex !== -1) selectSeat(selectedSeatIndex);
 }
 
 function resetTable() {
-    seats.forEach((s, i) => {
-        if(s.name) { s.cards = []; s.extraCards = []; s.score = 0; s.isDone = false; renderSeat(i); }
+    [...seats.filter(x => x.name), dealer].forEach(s => { 
+        s.cards = []; s.initial = []; s.tableCards = []; s.score = 0; s.stopped = false; 
     });
+    seats.forEach((s, i) => { if(s.name) renderSeat(i); });
+    renderDealer();
+    currentPokerCards = [];
     document.getElementById('centralArea').innerHTML = '';
-    currentDeck = [];
-    updateButtons();
+    selectSeat(selectedSeatIndex);
 }
+
 setupSlots();
 </script>
 </body>
