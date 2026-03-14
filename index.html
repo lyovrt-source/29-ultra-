@@ -353,11 +353,11 @@ function checkWinners() {
 function renderSeatScore(i) {
     let s = seats[i];
     const status = document.querySelector(`#slot${i} .status-area`);
-    if(status) status.innerHTML = s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`;
+    if(status) status.innerHTML = s.score > 29 ? '<span class="bust-label">ՇԱՏ</span>' : `<span class="score-tag">${s.score}</span>`;
 }
 
 function renderDealerScore() {
-    document.getElementById('dealerStatus').innerHTML = dealer.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${dealer.score}</span>`;
+    document.getElementById('dealerStatus').innerHTML = dealer.score > 29 ? '<span class="bust-label">ՇԱՏ</span>' : `<span class="score-tag">${dealer.score}</span>`;
 }
 
 function showHistory() {
@@ -374,7 +374,7 @@ function renderSeat(i) {
   slot.innerHTML = `
     <div class="name-box"><span class="name-tag">${s.name}</span></div>
     <div class="cards-container">${renderCards(s.cards, false)}</div>
-    <div class="status-area">${s.score > 29 ? '<span class="bust-label">ՎԱՌՎԱԾ</span>' : `<span class="score-tag">${s.score}</span>`}</div>
+    <div class="status-area">${s.score > 29 ? '<span class="bust-label">ՇԱՏ</span>' : `<span class="score-tag">${s.score}</span>`}</div>
   `;
 }
 
